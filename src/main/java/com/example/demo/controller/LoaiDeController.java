@@ -1,0 +1,114 @@
+package com.example.demo.controller;
+
+import com.example.bedatnsd47.entity.LoaiDe;
+import com.example.bedatnsd47.service.LoaiDeService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Date;
+
+@Controller
+@RequestMapping("/admin/loai-de")
+public class LoaiDeController {
+
+    @Autowired
+    LoaiDeService loaiDeService;
+
+    private Date currentDate = new Date();
+
+    @GetMapping("")
+    public String hienThi(
+            Model model
+    ) {
+        model.addAttribute("listLoaiDe", loaiDeService.findAll());
+        model.addAttribute("loaiDe", new LoaiDe());
+        return "/admin-template/loai_de/loai-de";
+    }
+
+    @GetMapping("/dang-hoat-dong")
+    public String hienThiDangHoatDong(
+            Model model
+    ) {
+        model.addAttribute("listLoaiDe", loaiDeService.getAllDangHoatDong());
+        model.addAttribute("loaiDe", new LoaiDe());
+        return "/admin-template/loai_de/loai-de";
+    }
+
+    @GetMapping("/ngung-hoat-dong")
+    public String hienThiNgungHoatDong(
+            Model model
+    ) {
+        model.addAttribute("listLoaiDe", loaiDeService.getAllNgungHoatDong());
+        model.addAttribute("loaiDe", new LoaiDe());
+        return "/admin-template/loai_de/loai-de";
+    }
+
+    @GetMapping("/view-update/{id}")
+    public String viewUpdate(
+            Model model,
+            @PathVariable("id") Long id
+    ) {
+        LoaiDe loaiDe = loaiDeService.getById(id);
+        model.addAttribute("loaiDe", loaiDe);
+        return "/admin-template/loai_de/sua-loai-de";
+    }
+
+    @PostMapping("/update")
+    public String update(@Valid
+                         @ModelAttribute("loaiDe") LoaiDe loaiDe,
+                         BindingResult result,
+                         Model model,
+                         RedirectAttributes redirectAttributes
+    ) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("checkThongBao", "thaiBai");
+            return "/admin-template/loai_de/sua-loai-de";
+        } else if (!loaiDeService.checkTenTrungSua(loaiDe.getId(), loaiDe.getTen())) {
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("checkTenTrung", "Loại đế đã tồn tại");
+            return "/admin-template/loai_de/sua-loai-de";
+        } else {
+            redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+            LoaiDe ld = loaiDeService.getById(loaiDe.getId());
+            loaiDe.setNgayTao(ld.getNgayTao());
+            loaiDe.setNgaySua(currentDate);
+            loaiDeService.update(loaiDe);
+            return "redirect:/admin/loai-de";
+        }
+
+    }
+
+    @PostMapping("/add")
+    public String add(@Valid @ModelAttribute("loaiDe") LoaiDe loaiDe,
+                      BindingResult result,
+                      Model model,
+                      RedirectAttributes redirectAttributes
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("checkModal", "modal");
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("listLoaiDe", loaiDeService.findAll());
+            return "/admin-template/loai_de/loai-de";
+        } else if (!loaiDeService.checkTenTrung(loaiDe.getTen())) {
+            model.addAttribute("checkModal", "modal");
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("checkTenTrung", "Loại đế đã tồn tại");
+            model.addAttribute("listLoaiDe", loaiDeService.findAll());
+            return "/admin-template/loai_de/loai-de";
+        } else {
+            redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+            loaiDe.setNgayTao(currentDate);
+            loaiDe.setNgaySua(currentDate);
+            loaiDe.setTrangThai(0);
+            loaiDeService.save(loaiDe);
+            return "redirect:/admin/loai-de";
+        }
+
+    }
+}

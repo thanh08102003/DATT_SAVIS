@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Glacat</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <div th:replace="~{admin-template/fragment/header :: header}"></div>
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+            <img src="../../static/img/logo.png" alt="">
+            <span class="d-none d-lg-block">NiceAdmin</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-grid"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/loai-de">
+                        <i class="bi bi-circle"></i><span>Loại Đế</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-envelope"></i>
+                <span>Hóa Đơn</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien" class="active">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/khach-hang">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/voucher">
+                <i class="bi bi-envelope"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li><!-- End Icons Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Quản Lý Nhân Viên</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <a class="btn btn-link" style="float: left;margin-top: 1%;"
+                                   href="/admin/nhan-vien">
+                                    <i class=" bi bi-arrow-left-circle-fill"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-12">
+                                <h1 class="modal-title fs-5"
+                                    style="text-align: center;margin-bottom: 2%;">Cập Nhật
+                                    Nhân Viên</h1>
+                            </div>
+                        </div>
+                        <!-- form sửa khách hàng -->
+                        <form class="row g-3" style="margin-top: 1%;margin-bottom: 5%;" method="post"
+                              enctype="multipart/form-data"
+                              th:action="@{/admin/nhan-vien/update}"
+                              th:object="${nhanVien}"
+                        >
+                            <input type="hidden" th:field="*{id}" name="id">
+                            <input hidden type="date" th:field="*{ngayTao}">
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Tên tài khoản:</label>
+                                <input type="text" class="form-control"
+                                       placeholder="Nhập tên tài khoản" th:field="*{tenTaiKhoan}">
+                                <span class="check-loi" th:errors="*{tenTaiKhoan}"></span>
+                                <span class="check-loi" th:text="${checkTenTrung}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Tên khách hàng:</label>
+                                <input type="text" class="form-control" placeholder="Nhập khách hàng"
+                                       th:field="*{hoVaTen}">
+                                <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Ngày sinh:</label>
+                                <input type="date" class="form-control" th:field="*{ngaySinh}">
+                                <span class="check-loi" th:errors="*{ngaySinh}"></span>
+                                <span class="check-loi" th:if="${checkNgaySinh=='ngaySinh'}">Năm sinh phải lớn 1923</span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Giới tính:</label>
+                                <div style="margin-top: 1%;">
+                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                           style="margin-left:5%;" checked th:field="*{gioiTinh}"
+                                           value="0">
+                                    <label class="form-check-label">
+                                        Nam
+                                    </label>
+
+                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                           style="margin-left:5%;" th:field="*{gioiTinh}"
+                                           value="1">
+                                    <label class="form-check-label">
+                                        Nữ
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Số điện thoại:</label>
+                                <input type="text" class="form-control"
+                                       placeholder="Nhập số điện thoại" th:field="*{soDienThoai}">
+                                <span class="check-loi" th:errors="*{soDienThoai}"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Trạng thái:</label>
+                                <div style="margin-top: 1%;">
+                                    <input class="form-check-input" type="radio" name="trangThai"
+                                           style="margin-left:5%;" checked th:field="*{trangThai}"
+                                           value="0">
+                                    <label class="form-check-label">
+                                        Đang hoạt động
+                                    </label>
+
+                                    <input class="form-check-input" type="radio" name="trangThai"
+                                           style="margin-left:5%;" checked th:field="*{trangThai}"
+                                           value="1">
+                                    <label class="form-check-label">
+                                        Ngừng hoạt động
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">
+                                    <span class="dau-sao">*</span>Email:</label>
+                                <input type="email" class="form-control" placeholder="Nhập email"
+                                       th:field="*{email}">
+                                <span class="check-loi" th:errors="*{email}"></span>
+                                <span class="check-loi" th:text="${checkEmailTrung}"></span>
+                            </div>
+
+                            <div class="col-12" hidden="hidden">
+                                <label class="form-label"><span class="dau-sao">*</span>Mật
+                                    Khẩu:</label>
+                                <input type="text" class="form-control"
+                                       placeholder="Nhập địa chỉ mật khẩu" th:field="*{matKhau}"/>
+                                <span class="check-loi" th:errors="*{matKhau}"></span>
+                            </div>
+                            <div class="modal-footer">
+                                </button>
+                                <button type="submit" class="btn btn-warning">Cập nhật</button>
+                            </div>
+                        </form>
+                        <!-- form sửa khách hàng end-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<!-- Vendor JS Files -->
+<div th:replace="~{admin-template/fragment/script :: script}"></div>
+
+</body>
+
+</html>
